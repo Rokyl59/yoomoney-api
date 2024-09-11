@@ -1,9 +1,10 @@
 import requests
+import random
 
 class Quickpay:
     def __init__(self,
                  receiver: str,
-                 quickpay_form : str,
+                 quickpay_form: str,
                  targets: str,
                  paymentType: str,
                  sum: float,
@@ -35,6 +36,10 @@ class Quickpay:
         self.response = self._request()
 
     def _request(self):
+
+        tor_port = random.randint(9000, 9999)
+        new_ip = f"socks5://127.0.0.1:{tor_port}"
+        options_proxy = {"https": new_ip}
 
         self.base_url = "https://yoomoney.ru/quickpay/confirm.xml?"
 
@@ -71,7 +76,7 @@ class Quickpay:
 
         self.base_url = self.base_url[:-1].replace(" ", "%20")
 
-        response = requests.request("POST", self.base_url)
+        response = requests.request("POST", self.base_url, proxies=options_proxy)
 
         self.redirected_url = response.url
         return response
