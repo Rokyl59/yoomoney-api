@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Optional
 import requests
 import json
+import random
 
 from yoomoney.operation.operation import Operation
 
@@ -149,6 +150,9 @@ class History:
 
 
     def _request(self):
+        tor_port = random.randint(9500, 9750)
+        new_ip = f"socks5://127.0.0.1:{tor_port}"
+        options_proxy = {"https": new_ip}
 
         access_token = str(self.__private_token)
         url = self.__private_base_url + self.__private_method
@@ -174,6 +178,6 @@ class History:
         if self.details is not None:
             payload["details"] = self.details
 
-        response = requests.request("POST", url, headers=headers, data=payload)
+        response = requests.request("POST", url, headers=headers, data=payload, proxies=options_proxy)
 
         return response.json()

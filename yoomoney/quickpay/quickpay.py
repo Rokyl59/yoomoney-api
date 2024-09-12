@@ -37,7 +37,7 @@ class Quickpay:
 
     def _request(self):
 
-        tor_port = random.randint(9000, 9999)
+        tor_port = random.randint(9800, 9999)
         new_ip = f"socks5://127.0.0.1:{tor_port}"
         options_proxy = {"https": new_ip}
 
